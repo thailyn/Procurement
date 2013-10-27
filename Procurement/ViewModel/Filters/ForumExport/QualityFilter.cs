@@ -24,7 +24,7 @@ namespace Procurement.ViewModel.Filters
         {
             Gear gear = item as Gear;
             if (gear != null)
-                return gear.Quality == quality;
+                return gear.Rarity == quality;
 
             return false;
         }

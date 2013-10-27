@@ -19,7 +19,7 @@ namespace Procurement.View
                 opacity = double.Parse(parameter.ToString(), CultureInfo.InvariantCulture);
             if (gear != null)
             {
-                switch (gear.Quality)
+                switch (gear.Rarity)
                 {
                     case Quality.White:
                         return new SolidColorBrush(Colors.White) { Opacity = opacity };

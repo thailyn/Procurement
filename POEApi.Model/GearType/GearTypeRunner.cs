@@ -88,6 +88,13 @@ namespace POEApi.Model
         { }
     }
 
+    public class MapRunner : GearTypeRunnerBase
+    {
+        public MapRunner()
+            : base(GearType.Map, "Map")
+        { }
+    }
+
     public class GloveRunner : GearTypeRunnerBase
     {
         public GloveRunner()

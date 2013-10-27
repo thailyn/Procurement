@@ -11,6 +11,8 @@ namespace POEApi.Model
         Currency,
     }
 
+    // Should be called "Rarity" (see Item Rarity gem
+    // and Orb of Chance item).
     public enum Quality : int
     {
         White,
@@ -36,6 +38,8 @@ namespace POEApi.Model
         public List<string> Explicitmods { get; set; }
         public ItemType ItemType { get; set; }
         public List<Property> Properties { get; set; }
+        public bool IsQuality { get; private set; }
+        public int Quality { get; private set; }
         public int UniqueIDHash { get; set; }
 
         protected Item(JSONProxy.Item item)
@@ -55,7 +59,15 @@ namespace POEApi.Model
             this.Explicitmods = item.ExplicitMods;
             this.ItemType = Model.ItemType.UnSet;
             if (item.Properties != null)
+            {
                 this.Properties = item.Properties.Select(p => new Property(p)).ToList();
+
+                if (this.Properties.Any(p => p.Name == "Quality"))
+                {
+                    this.IsQuality = true;
+                    this.Quality = ProxyMapper.GetQuality(item.Properties);
+                }
+            }
         }
 
         protected abstract int getConcreteHash();
@@ -82,7 +94,7 @@ namespace POEApi.Model
             if (item.frameType <= 3)
                 return (Quality)item.frameType;
 
-            return Quality.White;
+            return Model.Quality.White;
         }
     }
 }

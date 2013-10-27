@@ -21,6 +21,7 @@
         Shield,
         Wand,
         Flask,
+        Map,
         QuestItem,
         Unknown
     }

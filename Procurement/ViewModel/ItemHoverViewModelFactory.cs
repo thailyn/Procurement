@@ -14,11 +14,11 @@ namespace Procurement.ViewModel
             Nullable<Quality> q = null;
 
             if (gear != null)
-                q = gear.Quality;
+                q = gear.Rarity;
 
             Map map = item as Map;
             if (map != null)
-                q = map.Quality;
+                q = map.Rarity;
 
             if (q != null)
             {
