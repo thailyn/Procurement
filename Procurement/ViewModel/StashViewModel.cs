@@ -252,7 +252,13 @@ namespace Procurement.ViewModel
                     MenuItem refresh = new MenuItem() { Header = "Refresh" };
                     refresh.Tag = itemStash;
                     refresh.Click += new RoutedEventHandler(refresh_Click);
+
+                    MenuItem refreshAll = new MenuItem() { Header = "Refresh All" };
+                    refreshAll.Tag = tabsAndContent;
+                    refreshAll.Click += new RoutedEventHandler(refreshAll_Click);
+
                     contextMenu.Items.Add(refresh);
+                    contextMenu.Items.Add(refreshAll);
                     item.ContextMenu = contextMenu;
                 }
 
@@ -277,6 +283,16 @@ namespace Procurement.ViewModel
             MenuItem source = sender as MenuItem;
             StashControl stash = source.Tag as StashControl;
             stash.RefreshTab();
+        }
+
+        void refreshAll_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem source = sender as MenuItem;
+            List<WhatsInTheBox> stashTabs = source.Tag as List<WhatsInTheBox>;
+            foreach (var tab in stashTabs)
+            {
+                tab.Stash.RefreshTab();
+            }
         }
 
         private Image getImage(Tab tab, bool mouseOver)
