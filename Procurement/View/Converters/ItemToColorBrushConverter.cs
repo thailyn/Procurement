@@ -21,13 +21,13 @@ namespace Procurement.View
             {
                 switch (gear.Rarity)
                 {
-                    case Quality.White:
+                    case Rarity.Normal:
                         return new SolidColorBrush(Colors.White) { Opacity = opacity };
-                    case Quality.Magic:
+                    case Rarity.Magic:
                         return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8888F1")) { Opacity = opacity };
-                    case Quality.Rare:
+                    case Rarity.Rare:
                         return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F1FF77")) { Opacity = opacity };
-                    case Quality.Unique:
+                    case Rarity.Unique:
                         return new SolidColorBrush(Colors.Orange) { Opacity = opacity };
                 }
             }

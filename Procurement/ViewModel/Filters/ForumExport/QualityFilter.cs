@@ -4,27 +4,27 @@ using POEApi.Model;
 
 namespace Procurement.ViewModel.Filters
 {
-    public class QualityFilter : IFilter
+    public class RarityFilter : IFilter
     {
         public FilterGroup Group
         {
-            get { return FilterGroup.Quality; }
+            get { return FilterGroup.Rarity; }
         }
 
-        private Quality quality;
-        public QualityFilter(Quality quality)
+        private Rarity rarity;
+        public RarityFilter(Rarity rarity)
         {
-            this.quality = quality;
+            this.rarity = rarity;
         }
 
-        public string Keyword { get { return quality.ToString() + " quality"; } }
-        public string Help { get { return "Returns All " + quality.ToString() + " quality items"; } }
+        public string Keyword { get { return rarity.ToString() + " rarity"; } }
+        public string Help { get { return "Returns All " + rarity.ToString() + " rarity items"; } }
 
         public bool Applicable(Item item)
         {
             Gear gear = item as Gear;
             if (gear != null)
-                return gear.Rarity == quality;
+                return gear.Rarity == rarity;
 
             return false;
         }

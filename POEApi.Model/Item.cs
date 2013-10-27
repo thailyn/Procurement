@@ -11,11 +11,9 @@ namespace POEApi.Model
         Currency,
     }
 
-    // Should be called "Rarity" (see Item Rarity gem
-    // and Orb of Chance item).
-    public enum Quality : int
+    public enum Rarity : int
     {
-        White,
+        Normal,
         Magic,
         Rare,
         Unique
@@ -89,12 +87,12 @@ namespace POEApi.Model
             return anonomousType.GetHashCode();
         }
 
-        protected Quality getQuality(JSONProxy.Item item)
+        protected Rarity getRarity(JSONProxy.Item item)
         {
             if (item.frameType <= 3)
-                return (Quality)item.frameType;
+                return (Rarity)item.frameType;
 
-            return Model.Quality.White;
+            return Rarity.Normal;
         }
     }
 }

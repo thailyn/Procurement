@@ -1,10 +1,10 @@
 ﻿using POEApi.Model;
 namespace Procurement.ViewModel.Filters
 {
-    internal class RareQuality : QualityFilter
+    internal class RareRarity : RarityFilter
     {
-        public RareQuality()
-            : base(Quality.Rare)
+        public RareRarity()
+            : base(Rarity.Rare)
         { }
     }
 }

@@ -11,12 +11,12 @@ namespace Procurement.ViewModel.ForumExportVisitors
         private Dictionary<string, IFilter> tokens;
         public GearVisitor()
         {
-            var tokensSource = from quality in Enum.GetNames(typeof(Quality))
+            var tokensSource = from quality in Enum.GetNames(typeof(Rarity))
                                from gearType in Enum.GetNames(typeof(GearType))
-                               select new KeyValuePair<string, IFilter>(string.Concat("{", quality, gearType, "}"), new AndFilter(new QualityFilter(getEnum<Quality>(quality)), new GearTypeFilter(getEnum<GearType>(gearType))));
+                               select new KeyValuePair<string, IFilter>(string.Concat("{", quality, gearType, "}"), new AndFilter(new RarityFilter(getEnum<Rarity>(quality)), new GearTypeFilter(getEnum<GearType>(gearType))));
 
             tokens = tokensSource.ToDictionary(i => i.Key, i => i.Value);
-            tokens.Add("{WhiteGear}", new WhiteQuality());
+            tokens.Add("{NormalGear}", new NormalRarity());
         }
         public override string Visit(IEnumerable<Item> items, string current)
         {
