@@ -20,6 +20,7 @@ namespace Procurement.ViewModel.Recipes
                 new BlacksmithsWhetstoneRecipe(),
                 new GlassblowersBaubleRecipe(),
                 new CartographersChiselRecipe(),
+                new SameBaseTypeRecipe(),
                 new SameNameRecipe("Chance Orb - 2 Of The Same Name", 2, true),
                 new SameNameRecipe("Alchemy Orb - 3 Of The Same Name", 3, false)
             };
