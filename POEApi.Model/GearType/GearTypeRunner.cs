@@ -6,6 +6,7 @@ namespace POEApi.Model
     public abstract class GearTypeRunner
     {
         public abstract bool IsCompatableType(Gear item);
+        public abstract string GetBaseType(Gear item);
         public GearType Type { get; set; }
 
         public GearTypeRunner(GearType gearType)
@@ -17,11 +18,13 @@ namespace POEApi.Model
     public class GearTypeRunnerBase : GearTypeRunner
     {
         protected List<string> compatableTypes;
+        protected List<string> incompatibleTypes;
 
         public GearTypeRunnerBase(GearType gearType, params string[] compatableTypes)
             : base(gearType)
         {
             this.compatableTypes = compatableTypes.ToList();
+            this.incompatibleTypes = new List<string>();
         }
 
         public override bool IsCompatableType(Gear item)
@@ -31,6 +34,18 @@ namespace POEApi.Model
                     return true;
 
             return false;
+        }
+
+        public override string GetBaseType(Gear item)
+        {
+            if (incompatibleTypes != null && incompatibleTypes.Any(t => item.TypeLine.Contains(t)))
+                return null;
+
+            foreach (var type in compatableTypes)
+                if (item.TypeLine.Contains(type))
+                    return type;
+
+            return null;
         }
     }
 

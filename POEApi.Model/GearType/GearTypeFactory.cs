@@ -36,5 +36,18 @@ namespace POEApi.Model
 
             return GearType.Unknown;
         }
+
+        public static string GetBaseType(Gear item)
+        {
+            foreach (var runner in runners)
+            {
+                string baseType = runner.GetBaseType(item);
+                if (!string.IsNullOrWhiteSpace(baseType))
+                {
+                    return baseType;
+                }
+            }
+            return null;
+        }
     }
 }
