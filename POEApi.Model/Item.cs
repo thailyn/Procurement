@@ -22,6 +22,7 @@ namespace POEApi.Model
     public abstract class Item
     {
         public bool Verified { get; private set; }
+        public bool Identified { get; private set; }
         public int W { get; private set; }
         public int H { get; private set; }
         public string IconURL { get; private set; }
@@ -43,6 +44,7 @@ namespace POEApi.Model
         protected Item(JSONProxy.Item item)
         {
             this.Verified = item.Verified;
+            this.Identified = item.Identified;
             this.W = item.W;
             this.H = item.H;
             this.IconURL = item.Icon;
