@@ -42,7 +42,7 @@ namespace Procurement.ViewModel.Recipes
                 return "2 Orbs of Augmentation - Same base type with normal, magic, rare, unidentified";
             }
 
-            return Name; // base case
+            return "1 Orb of Augmentation - Same base type with normal, magic, and rare"; // base case
         }
 
         public override IEnumerable<RecipeResult> Matches(IEnumerable<POEApi.Model.Item> items)
@@ -52,13 +52,14 @@ namespace Procurement.ViewModel.Recipes
                                                                     .GroupBy(g => g.BaseType)
                                                                     .ToDictionary(g => g.Key.ToString(), g => g.ToList());
 
+            Func<Gear, bool> emptyConstraint = g => true;
             Func<Gear, bool> qualityConstraint = g => g.Quality == 20;
             Func<Gear, bool> unidentifiedConstraint = g => !g.Identified || g.Rarity == Rarity.Normal;
             Func<Gear, bool> qualityAndUnidentifiedConstraint = g => qualityConstraint(g) && unidentifiedConstraint(g);
             IEnumerable<RecipeResult> allResults = new List<RecipeResult>();
 
             foreach (var constraint in new List<Func<Gear, bool>>() {
-                qualityAndUnidentifiedConstraint, qualityConstraint, unidentifiedConstraint })
+                qualityAndUnidentifiedConstraint, qualityConstraint, unidentifiedConstraint, emptyConstraint })
             {
                 allResults = allResults.Concat(getNextResult(baseTypeBuckets, constraint));
             }
