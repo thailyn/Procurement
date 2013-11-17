@@ -45,7 +45,6 @@ namespace Procurement.ViewModel.Recipes
             return Name; // base case
         }
 
-        delegate bool baseTypeConstraint(Gear g);
         public override IEnumerable<RecipeResult> Matches(IEnumerable<POEApi.Model.Item> items)
         {
             List<Gear> allGear = items.OfType<Gear>().ToList();
@@ -53,24 +52,22 @@ namespace Procurement.ViewModel.Recipes
                                                                     .GroupBy(g => g.BaseType)
                                                                     .ToDictionary(g => g.Key.ToString(), g => g.ToList());
 
-            baseTypeConstraint qualityConstraint = g => g.Quality == 20;
-            baseTypeConstraint unidentifiedConstraint = g => !g.Identified || g.Rarity == Rarity.Normal;
-            baseTypeConstraint qualityAndUnidentifiedConstraint = g => qualityConstraint(g) && unidentifiedConstraint(g);
+            Func<Gear, bool> qualityConstraint = g => g.Quality == 20;
+            Func<Gear, bool> unidentifiedConstraint = g => !g.Identified || g.Rarity == Rarity.Normal;
+            Func<Gear, bool> qualityAndUnidentifiedConstraint = g => qualityConstraint(g) && unidentifiedConstraint(g);
             IEnumerable<RecipeResult> allResults = new List<RecipeResult>();
 
-            foreach (var constraint in new List<baseTypeConstraint>() {
+            foreach (var constraint in new List<Func<Gear, bool>>() {
                 qualityAndUnidentifiedConstraint, qualityConstraint, unidentifiedConstraint })
             {
-                //yield return getNextResult(baseTypeBuckets, constraint).ToList();
                 allResults = allResults.Concat(getNextResult(baseTypeBuckets, constraint));
-                //yield return getNextResult(baseTypeBuckets, constraint);
             }
 
             foreach (var result in allResults)
                 yield return result;
         }
 
-        private IEnumerable<RecipeResult> getNextResult(Dictionary<string, List<Gear>> buckets, baseTypeConstraint constraint)
+        private IEnumerable<RecipeResult> getNextResult(Dictionary<string, List<Gear>> buckets, Func<Gear, bool> constraint)
         {
             foreach(var baseTypeBucket in buckets)
             {
