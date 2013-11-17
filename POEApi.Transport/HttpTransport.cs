@@ -12,7 +12,6 @@ namespace POEApi.Transport
     public class HttpTransport : ITransport
     {
         private string email;
-        private SecureString password;
         private CookieContainer credentialCookies;
 
         private bool useProxy = false;
@@ -30,22 +29,20 @@ namespace POEApi.Transport
 
         public event ThottledEventHandler Throttled;
 
-        public HttpTransport(string login, SecureString password)
+        public HttpTransport(string login)
         {
             credentialCookies = new CookieContainer();
             this.email = login;
-            this.password = password;
             RequestThrottle.Instance.Throttled += new ThottledEventHandler(instance_Throttled);
         }
 
-        public HttpTransport(string login, SecureString password, string proxyUser, string proxyPassword, string proxyDomain)
-            : this(login, password)
+        public HttpTransport(string login, string proxyUser, string proxyPassword, string proxyDomain)
+            : this(login)
         {
             this.proxyUser = proxyUser;
             this.proxyPassword = proxyPassword;
             this.proxyDomain = proxyDomain;
             this.useProxy = true;
-            RequestThrottle.Instance.Throttled += new ThottledEventHandler(instance_Throttled);
         }
 
         private void instance_Throttled(object sender, ThottledEventArgs e)
@@ -54,8 +51,19 @@ namespace POEApi.Transport
                 Throttled(this, e);
         }
 
-        public bool Authenticate(string email, SecureString password)
+        public bool Authenticate(string email, SecureString password, bool useSessionID)
         {
+            if (useSessionID)
+            {
+                credentialCookies.Add(new System.Net.Cookie("PHPSESSID", password.UnWrap(), "/", "www.pathofexile.com"));
+                HttpWebRequest confirmAuth = getHttpRequest(HttpMethod.GET, loginURL);
+                HttpWebResponse confirmAuthResponse = (HttpWebResponse)confirmAuth.GetResponse();
+
+                if (confirmAuthResponse.ResponseUri.ToString() == loginURL)
+                    throw new LogonFailedException();
+                return true;
+            }
+
             HttpWebRequest getHash = getHttpRequest(HttpMethod.GET, loginURL);
             HttpWebResponse hashResponse = (HttpWebResponse)getHash.GetResponse();
             string loginResponse = Encoding.Default.GetString(getMemoryStreamFromResponse(hashResponse).ToArray());

@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace POEApi.Transport
 {
-    class CachedTransport : ITransport
+    public class CachedTransport : ITransport
     {
         private ITransport innerTranport;
         private const string stashKey = "stash";
@@ -30,9 +30,9 @@ namespace POEApi.Transport
                 Throttled(sender, e);
         }
 
-        public bool Authenticate(string email, SecureString password)
+        public bool Authenticate(string email, SecureString password, bool useSessionID)
         {
-            return innerTranport.Authenticate(email, password);
+            return innerTranport.Authenticate(email, password, useSessionID);
         }
 
         public Stream GetStash(int index, string league, bool refresh)

@@ -13,7 +13,7 @@ namespace Procurement.ViewModel.Recipes
         {
             known = new List<Recipe>() 
             { 
-                new OneChoasRecipe(), 
+                new OneChaosRecipe(), 
                 new Chromatic(), 
                 new GCPRecipe(), 
                 new ArmourersScrapRecipe(),

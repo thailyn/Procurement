@@ -42,7 +42,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -206,6 +206,7 @@
     <Compile Include="ViewModel\ForumExportViewModel.cs" />
     <Compile Include="ViewModel\Filters\ForumExport\AuraGemsFilter.cs" />
     <Compile Include="ViewModel\ForumExportVisitors\AuraGemsVisitor.cs" />
+    <Compile Include="ViewModel\ForumExportVisitors\LinksVisitor.cs" />
     <Compile Include="ViewModel\ForumExportVisitors\MultipleBuyoutVisitor.cs" />
     <Compile Include="ViewModel\ForumExportVisitors\SingleBuyoutVisitor.cs" />
     <Compile Include="ViewModel\ForumExportVisitors\CurseGemsVisitor.cs" />
@@ -241,7 +242,7 @@
     <Compile Include="ViewModel\Recipes\GCPRecipe.cs" />
     <Compile Include="ViewModel\Recipes\GlassblowersBaubleRecipe.cs" />
     <Compile Include="ViewModel\Recipes\MinimumQualityRecipe.cs" />
-    <Compile Include="ViewModel\Recipes\OneChoasRecipe.cs" />
+    <Compile Include="ViewModel\Recipes\OneChaosRecipe.cs" />
     <Compile Include="ViewModel\Recipes\Recipe.cs" />
     <Compile Include="ViewModel\Recipes\RecipeManager.cs" />
     <Compile Include="ViewModel\Recipes\RecipeResult.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="ViewModel\ScreenController.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\StashViewModel.cs" />
+    <Compile Include="ViewModel\StatusController.cs" />
     <Compile Include="ViewModel\TradingViewModel.cs" />
     <Compile Include="View\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
@@ -587,6 +589,9 @@
   <ItemGroup>
     <Resource Include="Images\Sockets\white-socketed.png" />
     <Resource Include="Images\Sockets\white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Avatars\scion.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
