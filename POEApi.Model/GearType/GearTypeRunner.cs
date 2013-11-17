@@ -5,7 +5,7 @@ namespace POEApi.Model
 {
     public abstract class GearTypeRunner
     {
-        public abstract bool IsCompatableType(Gear item);
+        public abstract bool IsCompatibleType(Gear item);
         public abstract string GetBaseType(Gear item);
         public GearType Type { get; set; }
 
@@ -17,19 +17,27 @@ namespace POEApi.Model
 
     public class GearTypeRunnerBase : GearTypeRunner
     {
-        protected List<string> compatableTypes;
+        protected List<string> generalTypes;
+        protected List<string> compatibleTypes;
         protected List<string> incompatibleTypes;
 
-        public GearTypeRunnerBase(GearType gearType, params string[] compatableTypes)
+        public GearTypeRunnerBase(GearType gearType, params string[] compatibleTypes)
             : base(gearType)
         {
-            this.compatableTypes = compatableTypes.ToList();
+            this.generalTypes = new List<string>();
+            this.compatibleTypes = compatibleTypes.ToList();
             this.incompatibleTypes = new List<string>();
         }
 
-        public override bool IsCompatableType(Gear item)
+        public override bool IsCompatibleType(Gear item)
         {
-            foreach (var type in compatableTypes)
+            // First, check the general types, to see if there is an easy match.
+            foreach (var type in generalTypes)
+                if (item.TypeLine.Contains(type))
+                    return true;
+
+            // Second, check all known types.
+            foreach (var type in compatibleTypes)
                 if (item.TypeLine.Contains(type))
                     return true;
 
@@ -41,7 +49,7 @@ namespace POEApi.Model
             if (incompatibleTypes != null && incompatibleTypes.Any(t => item.TypeLine.Contains(t)))
                 return null;
 
-            foreach (var type in compatableTypes)
+            foreach (var type in compatibleTypes)
                 if (item.TypeLine.Contains(type))
                     return type;
 
@@ -55,7 +63,7 @@ namespace POEApi.Model
             : base(GearType.Ring)
         { }
 
-        public override bool IsCompatableType(Gear item)
+        public override bool IsCompatibleType(Gear item)
         {
             if (item.TypeLine.Contains("Ring") && !item.TypeLine.Contains("Ringmail"))
                 return true;

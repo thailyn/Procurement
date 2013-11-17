@@ -31,7 +31,7 @@ namespace POEApi.Model
         public static GearType GetType(Gear item)
         {
             foreach (var runner in runners)
-                if (runner.IsCompatableType(item))
+                if (runner.IsCompatibleType(item))
                     return runner.Type;
 
             return GearType.Unknown;
@@ -41,10 +41,15 @@ namespace POEApi.Model
         {
             foreach (var runner in runners)
             {
-                string baseType = runner.GetBaseType(item);
-                if (!string.IsNullOrWhiteSpace(baseType))
+                // If we know the GearType of the item, only query the GearTypeRunner for
+                // that type.  If the GearType is unknown, query all of them.
+                if (item.GearType == GearType.Unknown || item.GearType == runner.Type)
                 {
-                    return baseType;
+                    string baseType = runner.GetBaseType(item);
+                    if (!string.IsNullOrWhiteSpace(baseType))
+                    {
+                        return baseType;
+                    }
                 }
             }
             return null;
