@@ -29,7 +29,7 @@ namespace Procurement.ViewModel.Recipes
         public Dictionary<string, List<RecipeResult>> Run(IEnumerable<Item> items)
         {
             return known.SelectMany(recipe => recipe.Matches(items))
-                        .GroupBy(r => r.Instance.Name)
+                        .GroupBy(r => r.Name)
                         .ToDictionary(g => g.Key, g => g.ToList());
         }
     }
