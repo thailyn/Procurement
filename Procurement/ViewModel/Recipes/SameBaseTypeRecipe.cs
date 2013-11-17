@@ -45,6 +45,7 @@ namespace Procurement.ViewModel.Recipes
             return Name; // base case
         }
 
+        delegate bool baseTypeConstraint(Gear g);
         public override IEnumerable<RecipeResult> Matches(IEnumerable<POEApi.Model.Item> items)
         {
             List<Gear> allGear = items.OfType<Gear>().ToList();
@@ -52,67 +53,75 @@ namespace Procurement.ViewModel.Recipes
                                                                     .GroupBy(g => g.BaseType)
                                                                     .ToDictionary(g => g.Key.ToString(), g => g.ToList());
 
-            //while (result.IsMatch)
-            while (baseTypeBuckets.Keys.Count > 0)
+            baseTypeConstraint qualityConstraint = g => g.Quality == 20;
+            baseTypeConstraint unidentifiedConstraint = g => !g.Identified || g.Rarity == Rarity.Normal;
+            baseTypeConstraint qualityAndUnidentifiedConstraint = g => qualityConstraint(g) && unidentifiedConstraint(g);
+            IEnumerable<RecipeResult> allResults = new List<RecipeResult>();
+
+            foreach (var constraint in new List<baseTypeConstraint>() {
+                qualityAndUnidentifiedConstraint, qualityConstraint, unidentifiedConstraint })
             {
-                RecipeResult result = getNextResult(baseTypeBuckets);
-                if (result.IsMatch)
-                    yield return result;
+                //yield return getNextResult(baseTypeBuckets, constraint).ToList();
+                allResults = allResults.Concat(getNextResult(baseTypeBuckets, constraint));
+                //yield return getNextResult(baseTypeBuckets, constraint);
             }
+
+            foreach (var result in allResults)
+                yield return result;
         }
 
-        private RecipeResult getNextResult(Dictionary<string, List<Gear>> buckets)
+        private IEnumerable<RecipeResult> getNextResult(Dictionary<string, List<Gear>> buckets, baseTypeConstraint constraint)
         {
-            RecipeResult result = new RecipeResult();
-            result.MatchedItems = new List<Item>();
-            result.Missing = new List<string>();
-            result.PercentMatch = 0;
-            result.Instance = this;
-            //result.Missing = "Missing item(s) with quality: ";
-            //List<Enum> missingRarities = new List<Enum>();
-
-            if (buckets.Keys.Count == 0)
-                return result;
-
-            var firstBucketPair = buckets.FirstOrDefault();
-            List<Gear> bucket = buckets.FirstOrDefault().Value;
-            if (bucket == null)
-                return result; // no match
-
-            if (bucket.Count == 0)
+            foreach(var baseTypeBucket in buckets)
             {
-                buckets.Remove(firstBucketPair.Key);
-            }
+                List<Gear> gears = baseTypeBucket.Value; // though, technically, gear is a mass noun
 
+                if (gears == null || gears.Count == 0)
+                    continue;
 
-            Dictionary<Rarity, Gear> set = new Dictionary<Rarity, Gear>();
-            set.Add(Rarity.Normal, bucket.FirstOrDefault(g => g.Rarity == Rarity.Normal));
-            set.Add(Rarity.Magic, bucket.FirstOrDefault(g => g.Rarity == Rarity.Magic));
-            set.Add(Rarity.Rare, bucket.FirstOrDefault(g => g.Rarity == Rarity.Rare));
-
-            decimal numKeys = set.Keys.Count;
-            foreach(var pair in set)
-            {
-                Rarity rarity = pair.Key;
-                Gear gear = pair.Value;
-                if (gear != null)
+                bool stop = false;
+                while (!stop)
                 {
-                    result.PercentMatch += (decimal)100.0 / numKeys;
-                    result.MatchedItems.Add(gear);
-                    bucket.Remove(gear);
-                }
-                else
-                {
-                    result.Missing.Add(string.Format("Item with quality: {0}", rarity.ToString()));
+                    RecipeResult result = new RecipeResult();
+                    result.MatchedItems = new List<Item>();
+                    result.Missing = new List<string>();
+                    result.PercentMatch = 0;
+                    result.Instance = this;
+
+                    Dictionary<Rarity, Gear> set = new Dictionary<Rarity, Gear>();
+                    set.Add(Rarity.Normal, gears.FirstOrDefault(g => g.Rarity == Rarity.Normal && constraint(g)));
+                    set.Add(Rarity.Magic, gears.FirstOrDefault(g => g.Rarity == Rarity.Magic && constraint(g)));
+                    set.Add(Rarity.Rare, gears.FirstOrDefault(g => g.Rarity == Rarity.Rare && constraint(g)));
+                    // TODO: Handle case with a unique item.
+
+                    decimal numKeys = set.Keys.Count;
+                    foreach (var pair in set)
+                    {
+                        Rarity rarity = pair.Key;
+                        Gear gear = pair.Value;
+                        if (gear != null)
+                        {
+                            result.PercentMatch += (decimal)100.0 / numKeys;
+                            result.MatchedItems.Add(gear);
+                        }
+                        else
+                        {
+                            result.Missing.Add(string.Format("Item with {0} rarity", rarity.ToString()));
+                        }
+                    }
+
+                    result.IsMatch = result.PercentMatch > base.ReturnMatchesGreaterThan;
+                    if (result.IsMatch) // only remove the items if they are in a "match" -- close enough to show in the UI
+                    {
+                        foreach (var pair in set)
+                            gears.Remove(pair.Value);
+                        yield return result;
+                    }
+
+                    if (result.Missing.Count > 0 || gears.Count == 0)
+                        stop = true;
                 }
             }
-
-            result.IsMatch = result.PercentMatch > base.ReturnMatchesGreaterThan;
-
-            if (result.Missing.Count > 0 || bucket.Count == 0)
-                buckets.Remove(firstBucketPair.Key);
-
-            return result;
         }
     }
 }
