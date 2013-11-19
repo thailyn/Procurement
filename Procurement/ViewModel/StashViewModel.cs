@@ -245,15 +245,22 @@ namespace Procurement.ViewModel
                 item.Content = itemStash;
                 itemStash.TabNumber = ApplicationState.Stash[ApplicationState.CurrentLeague].Tabs[i - 1].i;
 
+                ContextMenu contextMenu = new ContextMenu();
+
+                MenuItem ignoreInRecipes = new MenuItem() { Header = "Ignore in Recipes", IsCheckable = true };
+                ignoreInRecipes.Tag = itemStash;
+                ignoreInRecipes.Click += new RoutedEventHandler(ignoreInFormulas_Click);
+                contextMenu.Items.Add(ignoreInRecipes);
+
                 if (!ApplicationState.Model.Offline)
                 {
-                    ContextMenu contextMenu = new ContextMenu();
                     MenuItem refresh = new MenuItem() { Header = "Refresh" };
                     refresh.Tag = itemStash;
                     refresh.Click += new RoutedEventHandler(refresh_Click);
                     contextMenu.Items.Add(refresh);
-                    item.ContextMenu = contextMenu;
                 }
+
+                item.ContextMenu = contextMenu;
 
                 stashView.tabControl.Items.Add(item);
                 tabsAndContent.Add(new WhatsInTheBox(i - 1, item, itemStash));
@@ -269,6 +276,15 @@ namespace Procurement.ViewModel
 
             UserSearchFilter searchCriteria = new UserSearchFilter(filter);
             return new List<IFilter>() { searchCriteria };
+        }
+
+        void ignoreInFormulas_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem source = sender as MenuItem;
+            bool isChecked = source.IsChecked;
+            StashControl stash = source.Tag as StashControl;
+            ApplicationState.Stash[ApplicationState.CurrentLeague].Tabs[stash.TabNumber].IgnoreItemsInRecipes = isChecked;
+            // refresh recipes here
         }
 
         void refresh_Click(object sender, RoutedEventArgs e)

@@ -8,6 +8,7 @@
         public string srcL { get; set; }
         public string srcC { get; set; }
         public string srcR { get; set; }
+        public bool IgnoreItemsInRecipes { get; set; }
     }
 
     public class Colour
