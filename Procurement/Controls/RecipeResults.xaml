@@ -18,6 +18,12 @@
         <Border Grid.Column="0" BorderBrush="#FF76591B" BorderThickness="2" VerticalAlignment="Top" Margin="7,10,0,0" Background="Black" Height="610" Width="390">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
                 <ItemsControl ItemsSource="{Binding Results}">
+                    <ItemsControl.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Refresh"
+                                      Click="ContextMenuRefresh_Click" />
+                        </ContextMenu>
+                    </ItemsControl.ContextMenu>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical"/>

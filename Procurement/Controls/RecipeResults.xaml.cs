@@ -33,5 +33,11 @@ namespace Procurement.Controls
             Item item = button.Tag as Item;
             vm.RadioButtonSelected(item);
         }
+
+        private void ContextMenuRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            RecipeResultViewModel vm = this.DataContext as RecipeResultViewModel;
+            vm.RefreshRecipes();
+        }
     }
 }

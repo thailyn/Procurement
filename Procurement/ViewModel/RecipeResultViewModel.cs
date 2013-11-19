@@ -59,6 +59,11 @@ namespace Procurement.ViewModel
                 SelectedItem = Results.Values.First().First().MatchedItems[0];
         }
 
+        public void RefreshRecipes()
+        {
+            updateResults();
+        }
+
         void ApplicationState_LeagueChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             updateResults();
