@@ -30,6 +30,7 @@
         ScrollofWisdom,
         AlbinaRhoaFeather,
         AlchemyShard,
-        Mirror
+        Mirror,
+        VaalOrb
     }
 }

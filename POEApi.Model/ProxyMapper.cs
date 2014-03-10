@@ -43,7 +43,8 @@ namespace POEApi.Model
             { "Albino Rhoa Feather", OrbType.AlbinaRhoaFeather},
             { "Mirror", OrbType.Mirror },
             { "Eternal Orb", OrbType.Eternal},
-            { "Imprint", OrbType.Imprint }            
+            { "Imprint", OrbType.Imprint },
+            { "Vaal Orb", OrbType.VaalOrb }
         };
         #endregion
 
