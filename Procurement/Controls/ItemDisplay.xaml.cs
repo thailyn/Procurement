@@ -17,6 +17,8 @@ namespace Procurement.Controls
     {
         private static List<Popup> annoyed = new List<Popup>();
         private static ResourceDictionary expressionDarkGrid;
+        private Image itemImage;
+        private bool contexted = false;
 
         private TextBlock textblock;
 
@@ -26,6 +28,16 @@ namespace Procurement.Controls
             expressionDarkGrid = expressionDarkGrid ?? Application.LoadComponent(new Uri("/Procurement;component/Controls/ExpressionDarkGrid.xaml", UriKind.RelativeOrAbsolute)) as ResourceDictionary;
 
             this.Loaded += new RoutedEventHandler(ItemDisplay_Loaded);
+            this.MouseRightButtonUp += ItemDisplay_MouseRightButtonUp;
+        }
+
+        void ItemDisplay_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (!contexted)
+            {
+                itemImage.ContextMenu = getContextMenu();
+                contexted = true;
+            }
         }
 
         public static void ClosePopups()
@@ -37,6 +49,7 @@ namespace Procurement.Controls
         {
             ItemDisplayViewModel vm = this.DataContext as ItemDisplayViewModel;
             Image i = vm.getImage();
+            itemImage = i;
 
             UIElement socket = vm.getSocket();
 
@@ -44,8 +57,6 @@ namespace Procurement.Controls
 
             if (socket != null)
                 doSocketOnHover(socket, i);
-
-            i.ContextMenu = getContextMenu();
 
             this.Height = i.Height;
             this.Width = i.Width;

@@ -85,10 +85,10 @@ namespace Procurement.ViewModel
             statusController = new StatusController(this.view.StatusBox);
             statusController.DisplayMessage(ApplicationState.Version + " Initialized.\r");
 
-            ApplicationState.Model.Authenticating += new POEModel.AuthenticateEventHandler(model_Authenticating);
-            ApplicationState.Model.StashLoading += new POEModel.StashLoadEventHandler(model_StashLoading);
-            ApplicationState.Model.ImageLoading += new POEModel.ImageLoadEventHandler(model_ImageLoading);
-            ApplicationState.Model.Throttled += new ThottledEventHandler(model_Throttled);
+            ApplicationState.Model.Authenticating += model_Authenticating;
+            ApplicationState.Model.StashLoading += model_StashLoading;
+            ApplicationState.Model.ImageLoading += model_ImageLoading;
+            ApplicationState.Model.Throttled += model_Throttled;
             ApplicationState.InitializeFont(Properties.Resources.fontin_regular_webfont);
             ApplicationState.InitializeFont(Properties.Resources.fontin_smallcaps_webfont);
         }
@@ -153,6 +153,10 @@ namespace Procurement.ViewModel
                 ApplicationState.SetDefaults();
 
                 statusController.DisplayMessage("\nDone!");
+                ApplicationState.Model.Authenticating -= model_Authenticating;
+                ApplicationState.Model.StashLoading -= model_StashLoading;
+                ApplicationState.Model.ImageLoading -= model_ImageLoading;
+                ApplicationState.Model.Throttled -= model_Throttled;
                 OnLoginCompleted();
             }).ContinueWith((t) => { Logger.Log(t.Exception.InnerException.ToString()); statusController.HandleError(t.Exception.InnerException.Message, toggleControls); }, TaskContinuationOptions.OnlyOnFaulted);
         }
