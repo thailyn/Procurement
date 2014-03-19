@@ -130,13 +130,19 @@ namespace Procurement.ViewModel
             StashItems.ForEach(s => s.FixName());
         }
 
-        public void update(int key, bool isChecked)
+        public void update(int key, bool isChecked, bool shouldUpdate)
         {
             if (isChecked)
                 selected.Add(key);
             else
                 selected.Remove(key);
 
+            if (shouldUpdate)
+                updateText();
+        }
+
+        public void updateText()
+        {
             Text = getFinal(selected.SelectMany(sid => ApplicationState.Stash[ApplicationState.CurrentLeague].GetItemsByTab(sid))
                                                               .OrderBy(id => id.Y).ThenBy(i => i.X));
         }

@@ -6,6 +6,8 @@ namespace Procurement.Controls
 {
     public partial class ForumExport : UserControl
     {
+        bool toggleAll = false;
+        
         public ForumExport()
         {
             InitializeComponent();
@@ -16,14 +18,17 @@ namespace Procurement.Controls
         {
             ForumExportViewModel vm = this.DataContext as ForumExportViewModel;
             CheckBox cb = sender as CheckBox;
-            vm.update(int.Parse(cb.Tag.ToString()), cb.IsChecked.Value);
+            vm.update(int.Parse(cb.Tag.ToString()), cb.IsChecked.Value, !toggleAll);
         }
 
         private void ToggleAll(object sender, RoutedEventArgs e)
         {
+            toggleAll = true;
             ForumExportViewModel vm = this.DataContext as ForumExportViewModel;
             CheckBox cb = sender as CheckBox;
             vm.ToggleAll(cb.IsChecked.Value);
+            toggleAll = false;
+            vm.updateText();
         }
     }
 }

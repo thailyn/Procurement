@@ -10,7 +10,7 @@ namespace POEApi.Model
         private const int tabSize = 144;
         public int NumberOfTabs { get; set; }
         public List<Tab> Tabs { get; set; }
-
+        private Dictionary<string, List<Item>> itemsByTab;
 
         internal Stash(JSONProxy.Stash proxy)
         {
@@ -40,8 +40,11 @@ namespace POEApi.Model
 
         public List<Item> GetItemsByTab(int tabId)
         {
+            if (itemsByTab == null)
+                itemsByTab = items.GroupBy(i => i.inventoryId).ToDictionary(kvp => kvp.Key, kvp => kvp.ToList());
+
             ++tabId;
-            return items.FindAll(i => i.inventoryId == ProxyMapper.STASH + tabId.ToString());
+            return itemsByTab[ProxyMapper.STASH + tabId.ToString()];
         }
 
         public List<T> Get<T>() where T : Item
