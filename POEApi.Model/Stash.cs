@@ -58,9 +58,8 @@ namespace POEApi.Model
 
         private void buildItemsByTab()
         {
-            itemsByTab = Enumerable.Range(1, NumberOfTabs)
-                                   .Select(i => ProxyMapper.STASH + i)
-                                   .ToDictionary(kvp => kvp, kvp => items.Where(i => i.inventoryId == kvp).ToList());
+            itemsByTab = Tabs.Select(t => ProxyMapper.STASH + (t.i + 1))
+                             .ToDictionary(kvp => kvp, kvp => items.Where(i => i.inventoryId == kvp).ToList());
         }
 
         public List<T> Get<T>() where T : Item
