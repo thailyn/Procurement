@@ -121,7 +121,11 @@ namespace Procurement.ViewModel
                 }
                 else
                 {
-                    Image img = getSocket(currentSocketPosition, socket, "-socketed");
+                    string suffix = "-socketed";
+                    Gem g = gear.SocketedItems.Find(si => si.Socket == i && (socket.Attribute == si.Color || socket.Attribute == "G" || si.Color == "G"));
+                    if (g.Color == "G")
+                        suffix += "-white";
+                    Image img = getSocket(currentSocketPosition, socket, suffix);
                     img.SetValue(Grid.RowProperty, currentSocketPosition.Item2);
                     img.SetValue(Grid.ColumnProperty, currentSocketPosition.Item1);
                     getMouseOverImage(img, getSocketItemAt(currentSocketPosition, socket, i, gear));
@@ -181,12 +185,12 @@ namespace Procurement.ViewModel
             if (item.SocketedItems == null || item.SocketedItems.Count == 0)
                 return false;
 
-            return item.SocketedItems.Exists(i => i.Socket == socketIndex && (socket.Attribute == i.Color || socket.Attribute == "G"));
+            return item.SocketedItems.Exists(i => i.Socket == socketIndex && (socket.Attribute == i.Color || socket.Attribute == "G" || i.Color == "G"));
         }
 
         private Gem getSocketItemAt(Tuple<int, int> nextAvail, Socket socket, int socketIndex, Gear item)
         {
-            return item.SocketedItems.First(i => i.Socket == socketIndex && (socket.Attribute == i.Color || socket.Attribute == "G"));
+            return item.SocketedItems.First(i => i.Socket == socketIndex && (socket.Attribute == i.Color || socket.Attribute == "G" || i.Color == "G"));
         }
 
         private Image getSocket(Tuple<int, int> current, Socket socket, string suffix)

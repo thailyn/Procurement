@@ -327,7 +327,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -609,9 +608,9 @@
     <Resource Include="Images\Avatars\scion.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Sockets\white-socketed-blue.png" />
-    <Resource Include="Images\Sockets\white-socketed-green.png" />
-    <Resource Include="Images\Sockets\white-socketed-red.png" />
+    <Resource Include="Images\Sockets\blue-socketed-white.png" />
+    <Resource Include="Images\Sockets\green-socketed-white.png" />
+    <Resource Include="Images\Sockets\red-socketed-white.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
