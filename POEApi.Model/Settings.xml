@@ -85,4 +85,8 @@
     </List>
   </Lists>
   <Buyouts />
+  <TabBuyouts>
+    <!--Add your tabwide buyouts here Eg"-->
+    <!--<Item id="TabNameHere" value="1 chaos" />-->
+  </TabBuyouts>
 </Settings>

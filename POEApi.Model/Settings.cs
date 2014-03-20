@@ -15,6 +15,7 @@ namespace POEApi.Model
         public static Dictionary<string, string> ProxySettings { get; private set; }
         public static Dictionary<string, List<string>> Lists { get; private set; }
         public static Dictionary<int, string> Buyouts { get; private set; }
+        public static Dictionary<string, string> TabsBuyouts { get; private set; }
         public static List<string> PopularGems { get; private set; }
         private static XElement originalDoc;
 
@@ -36,6 +37,10 @@ namespace POEApi.Model
                 Buyouts = new Dictionary<int, string>();
                 if (originalDoc.Element("Buyouts") != null)
                     Buyouts = originalDoc.Element("Buyouts").Elements("Item").ToDictionary(list => (int)list.Attribute("id"), list => list.Attribute("value").Value);
+
+                TabsBuyouts = new Dictionary<string, string>();
+                if (originalDoc.Element("TabBuyouts") != null)
+                    TabsBuyouts = originalDoc.Element("TabBuyouts").Elements("Item").ToDictionary(list => list.Attribute("id").Value, list => list.Attribute("value").Value);
             }
             catch (Exception ex)
             {

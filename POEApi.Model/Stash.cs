@@ -11,6 +11,7 @@ namespace POEApi.Model
         public int NumberOfTabs { get; set; }
         public List<Tab> Tabs { get; set; }
         private Dictionary<string, List<Item>> itemsByTab;
+        private Dictionary<string, string> tabNameByInventoryId;
 
         internal Stash(JSONProxy.Stash proxy)
         {
@@ -45,6 +46,14 @@ namespace POEApi.Model
 
             ++tabId;
             return itemsByTab[ProxyMapper.STASH + tabId.ToString()];
+        }
+
+        public string GetTabNameByInventoryId(string inventoryID)
+        {
+            if (tabNameByInventoryId == null)
+                tabNameByInventoryId = Tabs.ToDictionary(kvp => ProxyMapper.STASH + (kvp.i + 1).ToString(), kvp => kvp.Name);
+
+            return tabNameByInventoryId[inventoryID];
         }
 
         private void buildItemsByTab()

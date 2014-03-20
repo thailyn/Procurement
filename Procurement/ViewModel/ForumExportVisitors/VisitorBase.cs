@@ -39,14 +39,24 @@ namespace Procurement.ViewModel.ForumExportVisitors
 
         protected string getLinkItem<T>(T item) where T : Item
         {
-            bool isBuyoutItem = Settings.Buyouts.ContainsKey(item.UniqueIDHash);
+            string tabName = ApplicationState.Stash[ApplicationState.CurrentLeague].GetTabNameByInventoryId(item.inventoryId);
+            bool isBuyoutItem = Settings.TabsBuyouts.ContainsKey(tabName) || Settings.Buyouts.ContainsKey(item.UniqueIDHash);
+
             if (isBuyoutItem && buyoutItemsOnlyVisibleInBuyoutsTag)
                 return string.Empty;
 
             if (isBuyoutItem && embedBuyouts)
-                return string.Format("\n[linkItem location=\"{0}\" league=\"{1}\" x=\"{2}\" y=\"{3}\"]\n~b/o {4}\n", item.inventoryId, ApplicationState.CurrentLeague, item.X, item.Y, Settings.Buyouts[item.UniqueIDHash]);
+                return string.Format("\n[linkItem location=\"{0}\" league=\"{1}\" x=\"{2}\" y=\"{3}\"]\n~b/o {4}\n", item.inventoryId, ApplicationState.CurrentLeague, item.X, item.Y, getBuyout<T>(item, tabName));
 
             return string.Format("[linkItem location=\"{0}\" league=\"{1}\" x=\"{2}\" y=\"{3}\"]", item.inventoryId, ApplicationState.CurrentLeague, item.X, item.Y);
+        }
+
+        private static string getBuyout<T>(T item, string tabName) where T : Item
+        {
+            if (Settings.Buyouts.ContainsKey(item.UniqueIDHash))
+                return Settings.Buyouts[item.UniqueIDHash];
+
+            return Settings.TabsBuyouts[tabName];
         }
     }
 }
