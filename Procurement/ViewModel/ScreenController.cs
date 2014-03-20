@@ -42,6 +42,12 @@ namespace Procurement.ViewModel
             MenuButtonCommand = new DelegateCommand(execute);
             mainView = layout;
             initLogin();
+            
+        }
+
+        public void UpdateTrading()
+        {
+            screens["Trading"] = new TradingView();
         }
 
         private void execute(object obj)

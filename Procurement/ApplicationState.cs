@@ -38,6 +38,9 @@ namespace Procurement
             get { return currentLeague; }
             set
             {
+                if (currentLeague == value)
+                    return;
+
                 currentLeague = value;
                 Characters = Model.GetCharacters().Where(c => c.League == value).ToList();
                 CurrentCharacter = Characters.First();

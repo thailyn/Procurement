@@ -41,10 +41,17 @@ namespace POEApi.Model
         public List<Item> GetItemsByTab(int tabId)
         {
             if (itemsByTab == null)
-                itemsByTab = items.GroupBy(i => i.inventoryId).ToDictionary(kvp => kvp.Key, kvp => kvp.ToList());
+                buildItemsByTab();
 
             ++tabId;
             return itemsByTab[ProxyMapper.STASH + tabId.ToString()];
+        }
+
+        private void buildItemsByTab()
+        {
+            itemsByTab = Enumerable.Range(1, NumberOfTabs)
+                                   .Select(i => ProxyMapper.STASH + i)
+                                   .ToDictionary(kvp => kvp, kvp => items.Where(i => i.inventoryId == kvp).ToList());
         }
 
         public List<T> Get<T>() where T : Item
