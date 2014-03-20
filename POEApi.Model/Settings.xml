@@ -20,6 +20,7 @@
     <Orb type="JewelersOrb" OrbAmount="10" ChaosAmount="1" />
     <Orb type="Alteration" OrbAmount="20" ChaosAmount="1" />
     <Orb type="Chromatic" OrbAmount="20" ChaosAmount="1" />
+    <Orb type="VaalOrb" OrbAmount="1" ChaosAmount="1" />    
   </Ratios>
   <PopularGems>
     <Gem name="Cast when Damage Taken" />

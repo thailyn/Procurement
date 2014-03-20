@@ -30,6 +30,7 @@
 
         <ComboBox Grid.Column="1" Grid.Row="1" Height="25" x:Name="OrbType">
             <ComboBoxItem Content="Chaos Orb" IsSelected="True"/>
+            <ComboBoxItem Content="Vaal Orb" />
             <ComboBoxItem Content="Exalted Orb" />
             <ComboBoxItem Content="Divine Orb" />
             <ComboBoxItem Content="Orb of Fusing" />

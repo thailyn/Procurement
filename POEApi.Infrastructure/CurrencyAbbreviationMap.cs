@@ -30,6 +30,7 @@ namespace POEApi.Infrastructure
             addItem("Gemcutter's Prism", "gcp");
             addItem("Divine Orb", "divine");
             addItem("Exalted Orb", "exa");
+            addItem("Vaal Orb", "vaal");
         }
 
         private static void addItem(string currency, string abbreviation)
