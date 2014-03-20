@@ -52,7 +52,16 @@ namespace Procurement.ViewModel
 
         private void execute(object obj)
         {
-            LoadView(screens[obj.ToString()]);
+            var key = obj.ToString();
+
+            if (key == "Recipes" && screens[key] == null)
+                screens[key] = new RecipeView();
+
+            if (key == "Trading" && screens[key] == null)
+                screens[key] = new TradingView();
+
+            
+            LoadView(screens[key]);
         }
 
         private void initScreens()
@@ -62,9 +71,9 @@ namespace Procurement.ViewModel
             {
                 screens.Add(STASH_VIEW, new StashView());
                 screens.Add("Inventory", new InventoryView());
-                screens.Add("Trading", new TradingView());
+                screens.Add("Trading", null);
                 screens.Add("Settings", new SettingsView());
-                screens.Add("Recipes", new RecipeView());
+                screens.Add("Recipes", null);
                 screens.Add("About", new AboutView());
             }));
         }

@@ -134,7 +134,7 @@ namespace Procurement.ViewModel
             getAvailableItems();
             expressionDark = Application.LoadComponent(new Uri("/Procurement;component/Controls/ExpressionDark.xaml", UriKind.RelativeOrAbsolute)) as ResourceDictionary;
 
-            configuredOrbType = OrbType.GemCutterPrism;
+            configuredOrbType = OrbType.Chaos;
             string currencyDistributionMetric = Settings.UserSettings["CurrencyDistributionMetric"];
             if (currencyDistributionMetric.ToLower() == "count")
                 currencyDistributionUsesCount = true;

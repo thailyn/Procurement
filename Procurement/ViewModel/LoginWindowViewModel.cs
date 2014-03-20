@@ -86,8 +86,6 @@ namespace Procurement.ViewModel
             statusController.DisplayMessage(ApplicationState.Version + " Initialized.\r");
 
             ApplicationState.Model.Authenticating += model_Authenticating;
-            ApplicationState.Model.StashLoading += model_StashLoading;
-            ApplicationState.Model.ImageLoading += model_ImageLoading;
             ApplicationState.Model.Throttled += model_Throttled;
             ApplicationState.InitializeFont(Properties.Resources.fontin_regular_webfont);
             ApplicationState.InitializeFont(Properties.Resources.fontin_smallcaps_webfont);
@@ -100,19 +98,31 @@ namespace Procurement.ViewModel
 
         public void Login(bool offline)
         {
-            authOffLine = offline;
             toggleControls();
+
+            if (!offline)
+            {
+                ApplicationState.Model.StashLoading += model_StashLoading;
+                ApplicationState.Model.ImageLoading += model_ImageLoading;
+            }
+
 
             Task.Factory.StartNew(() =>
             {
                 SecureString password = formChanged ? this.view.txtPassword.SecurePassword : Settings.UserSettings["AccountPassword"].Decrypt();
-                ApplicationState.Model.Authenticate(Email, password, authOffLine, useSession);
+                ApplicationState.Model.Authenticate(Email, password, offline, useSession);
                 saveSettings(password);
 
-                if (!authOffLine)
+                if (!offline)
+                {
                     ApplicationState.Model.ForceRefresh();
+                    statusController.DisplayMessage("Loading characters...");
+                }
+                else
+                {
+                    statusController.DisplayMessage("Loading Procurement in offline mode...");
+                }
 
-                statusController.DisplayMessage("Loading characters...");
                 List<Character> chars;
                 try
                 {
@@ -143,7 +153,7 @@ namespace Procurement.ViewModel
                         continue;
 
                     ApplicationState.Characters.Add(character);
-                    loadCharacterInventory(character);
+                    loadCharacterInventory(character, offline);
                     loadStash(character);
                 }
 
@@ -152,7 +162,9 @@ namespace Procurement.ViewModel
 
                 ApplicationState.SetDefaults();
 
-                statusController.DisplayMessage("\nDone!");
+                if (!offline)
+                    statusController.DisplayMessage("\nDone!");                
+
                 ApplicationState.Model.Authenticating -= model_Authenticating;
                 ApplicationState.Model.StashLoading -= model_StashLoading;
                 ApplicationState.Model.ImageLoading -= model_ImageLoading;
@@ -191,10 +203,13 @@ namespace Procurement.ViewModel
             ApplicationState.Leagues.Add(character.League);
         }
 
-        private void loadCharacterInventory(Character character)
+        private void loadCharacterInventory(Character character, bool offline)
         {
             bool success = false;
-            statusController.DisplayMessage((string.Format("Loading {0}'s inventory...", character.Name)));
+
+            if (!offline)
+                statusController.DisplayMessage((string.Format("Loading {0}'s inventory...", character.Name)));
+
             List<Item> inventory = null;
             try
             {
@@ -208,12 +223,20 @@ namespace Procurement.ViewModel
             }
 
             var inv = inventory.Where(i => i.inventoryId != "MainInventory");
+            updateStatus(success, offline);
+
+            ApplicationState.Model.GetImages(inventory);
+        }
+
+        private void updateStatus(bool success, bool offline)
+        {
+            if (offline)
+                return;
+
             if (success)
                 statusController.Ok();
             else
                 statusController.NotOK();
-
-            ApplicationState.Model.GetImages(inventory);
         }
 
         void model_StashLoading(POEModel sender, StashLoadedEventArgs e)
