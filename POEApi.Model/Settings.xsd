@@ -74,7 +74,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="Butouts">
+  <xs:element name="Buyouts">
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="Item" minOccurs="0" maxOccurs="unbounded" />
