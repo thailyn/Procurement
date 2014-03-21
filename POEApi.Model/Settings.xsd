@@ -8,7 +8,7 @@
         <xs:element ref="UserSettings" minOccurs="1" maxOccurs="1" />
         <xs:element ref="ProxySettings" minOccurs="1" maxOccurs="1" />
         <xs:element ref="Lists" minOccurs="1" maxOccurs="1" />
-        <xs:element ref="Butouts" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="Buyouts" minOccurs="1" maxOccurs="1" />
         <xs:element ref="TabButouts" minOccurs="1" maxOccurs="1" />
       </xs:sequence>
     </xs:complexType>
