@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Settings>
+<?xml version="1.0" encoding="utf-8" ?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Settings.xsd">
   <Ratios>
     <Orb type="Mirror" OrbAmount="1" ChaosAmount="450" />
     <Orb type="Eternal" OrbAmount="1" ChaosAmount="50" />
