@@ -55,10 +55,9 @@ namespace Procurement.ViewModel
         private void updateResults()
         {
             List<Item> items = new List<Item>();
-            //Stash stash = ApplicationState.Model.GetStash(ApplicationState.CurrentLeague); // get a fresh copy from the cache
-            Stash stash = ApplicationState.Stash[ApplicationState.CurrentLeague]; // use the current view of the stash
+            Stash stash = ApplicationState.Stash[ApplicationState.CurrentLeague];
 
-            var usableTabs = stash.Tabs.Where(t => !t.IgnoreItemsInRecipes);
+            var usableTabs = stash.Tabs.Where(t => !Settings.Lists["IgnoreTabsInRecipes"].Contains(t.Name)).ToList();
             foreach (var tab in usableTabs)
             {
                 items.AddRange(stash.GetItemsByTab(tab.i));

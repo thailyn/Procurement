@@ -91,6 +91,28 @@ namespace POEApi.Model
                 originalDoc.Element("Buyouts").Add(buyout);
             }
 
+            foreach (var listKey in Settings.Lists.Keys)
+            {
+                // For now, only save the IgnoreTabsInRecipes section.  The others
+                // must be manually updated by the user.  This is also to preserve
+                // the instructions in comments for those other lists.
+                if (!string.Equals("IgnoreTabsInRecipes", listKey)) continue;
+
+                XElement original = originalDoc.Element("Lists").Descendants().FirstOrDefault(x =>
+                    x.Attribute("name") != null && string.Equals(x.Attribute("name").Value, listKey));
+                if (original == null)
+                {
+                    original = new XElement("List", new XAttribute("name", listKey));
+                }
+
+                original.RemoveNodes();
+                foreach (var listValue in Settings.Lists[listKey])
+                {
+                    XElement listItem = new XElement("Item", new XAttribute("value", listValue));
+                    original.Add(listItem);
+                }
+            }
+
             try
             {
                 originalDoc.Save(location);

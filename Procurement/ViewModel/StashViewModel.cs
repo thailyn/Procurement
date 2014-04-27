@@ -229,6 +229,9 @@ namespace Procurement.ViewModel
         {
             var filter = string.Empty;
 
+            Dictionary<string, bool> ignoredTabsInRecipes = Settings.Lists["IgnoreTabsInRecipes"]
+                .ToDictionary(kvp => kvp, kvp => true);
+
             for (int i = 1; i <= ApplicationState.Stash[ApplicationState.CurrentLeague].NumberOfTabs; i++)
             {
                 TabItem item = new TabItem();
@@ -247,9 +250,11 @@ namespace Procurement.ViewModel
 
                 ContextMenu contextMenu = new ContextMenu();
 
-                MenuItem ignoreInRecipes = new MenuItem() { Header = "Ignore in Recipes", IsCheckable = true };
+                MenuItem ignoreInRecipes = new MenuItem() { Header = "Ignore in Recipes", IsCheckable = true,
+                                                            IsChecked = ignoredTabsInRecipes.ContainsKey(ApplicationState.Stash[ApplicationState.CurrentLeague].Tabs[i - 1].Name) };
                 ignoreInRecipes.Tag = itemStash;
                 ignoreInRecipes.Click += new RoutedEventHandler(ignoreInFormulas_Click);
+
                 contextMenu.Items.Add(ignoreInRecipes);
 
                 if (!ApplicationState.Model.Offline)
@@ -280,11 +285,22 @@ namespace Procurement.ViewModel
 
         void ignoreInFormulas_Click(object sender, RoutedEventArgs e)
         {
+            List<string> ignoredTabs = Settings.Lists["IgnoreTabsInRecipes"];
             MenuItem source = sender as MenuItem;
             bool isChecked = source.IsChecked;
             StashControl stash = source.Tag as StashControl;
-            ApplicationState.Stash[ApplicationState.CurrentLeague].Tabs[stash.TabNumber].IgnoreItemsInRecipes = isChecked;
-            // refresh recipes here
+            string stashName = ApplicationState.Stash[ApplicationState.CurrentLeague].Tabs[stash.TabNumber].Name;
+
+            if (ignoredTabs.Contains(stashName))
+            {
+                ignoredTabs.Remove(stashName);
+            }
+            else
+            {
+                ignoredTabs.Add(stashName);
+            }
+
+            Settings.Save();
         }
 
         void refresh_Click(object sender, RoutedEventArgs e)
