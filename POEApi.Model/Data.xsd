@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Data"
+    targetNamespace="http://tempuri.org/Data.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/Data.xsd"
+    xmlns:mstns="http://tempuri.org/Data.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="GearBaseTypes" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Item">
+    <xs:complexType>
+      <xs:attribute name="id" use="required" type="xs:string" />
+      <xs:attribute name="value" use="required" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
