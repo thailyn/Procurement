@@ -59,7 +59,7 @@ namespace POEApi.Model
             GearBaseTypes = new Dictionary<GearType, List<string>>();
             if (dataDoc.Element("GearBaseTypes") != null)
                 GearBaseTypes = dataDoc.Element("GearBaseTypes").Elements("GearBaseType")
-                    .ToDictionary(g => (GearType)Enum.Parse(typeof(GearType), g.Attribute("name").Value), g => g.Elements("Item").Select(e => e.Attribute("value").Value).ToList());
+                    .ToDictionary(g => (GearType)Enum.Parse(typeof(GearType), g.Attribute("name").Value), g => g.Elements("Item").Select(e => e.Attribute("name").Value).ToList());
         }
 
         private static double getChaosAmount(XElement orb)

@@ -105,10 +105,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data.xsd">
+    <Content Include="Data.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
