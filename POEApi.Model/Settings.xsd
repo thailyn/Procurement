@@ -184,6 +184,7 @@
             <xs:enumeration value="MyTabs" />
             <xs:enumeration value="MyCharacters" />
             <xs:enumeration value="AdditionalTemplates" />
+            <xs:enumeration value="IgnoreTabsInRecipes" />
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
