@@ -10,6 +10,7 @@ using System.Windows.Media;
 using POEApi.Model;
 using Procurement.ViewModel;
 using POEApi.Infrastructure;
+using Procurement.Utility;
 
 namespace Procurement.Controls
 {
@@ -145,10 +146,16 @@ namespace Procurement.Controls
                 setBuyout.Header = buyoutControl;
                 buyoutControl.SaveClicked += new SetBuyoutView.BuyoutHandler(buyoutView_SaveClicked);
                 buyoutControl.RemoveClicked += new SetBuyoutView.BuyoutHandler(buyoutControl_RemoveClicked);
+                buyoutControl.SaveImageClicked += buyoutControl_SaveImageClicked;
                 menu.Items.Add(setBuyout);
             }
 
             return menu;
+        }
+
+        void buyoutControl_SaveImageClicked()
+        {
+            ItemHoverRenderer.SaveToDisk((this.DataContext as ItemDisplayViewModel).Item, Dispatcher);
         }
 
         void buyoutControl_RemoveClicked(string amount, string orbType)

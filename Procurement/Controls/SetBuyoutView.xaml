@@ -14,6 +14,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100" />
@@ -49,7 +50,8 @@
 
         <Button Content="Save Buyout" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="25" Click="SaveBuyout_Click"/>
         <Button Content="Remove Buyout" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="25" Click="RemoveBuyout_Click"/>
+        <Button Content="Save Image" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Height="25" Click="SaveImage_Click"/>
 
-        
+
     </Grid>
 </UserControl>

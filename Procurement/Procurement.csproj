@@ -120,6 +120,9 @@
     <Compile Include="Controls\ItemHoverHeader.xaml.cs">
       <DependentUpon>ItemHoverHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ItemHoverImage.xaml.cs">
+      <DependentUpon>ItemHoverImage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LeagueSelection.xaml.cs">
       <DependentUpon>LeagueSelection.xaml</DependentUpon>
     </Compile>
@@ -133,6 +136,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ItemHoverRenderer.cs" />
     <Compile Include="Utility\StashHelper.cs" />
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\DisplayModeStrategy\DisplayModeFactory.cs" />
@@ -376,6 +380,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ItemHoverHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ItemHoverImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

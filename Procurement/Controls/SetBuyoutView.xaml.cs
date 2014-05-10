@@ -16,7 +16,9 @@ namespace Procurement.Controls
 
         public event BuyoutHandler SaveClicked;
         public event BuyoutHandler RemoveClicked;
+        public event SaveImageHandler SaveImageClicked;
         public delegate void BuyoutHandler(string amount, string orbType);
+        public delegate void SaveImageHandler();
 
         public void SaveBuyout_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -24,6 +26,11 @@ namespace Procurement.Controls
                 BuyoutValue.Text = "0";
             
             SaveClicked(double.Parse(BuyoutValue.Text, CultureInfo.InvariantCulture).ToString(), ((ComboBoxItem)OrbType.SelectedItem).Content.ToString());
+        }
+
+        public void SaveImage_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            SaveImageClicked();
         }
 
         private void Increase_Click(object sender, System.Windows.RoutedEventArgs e)
