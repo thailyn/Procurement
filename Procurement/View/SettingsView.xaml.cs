@@ -26,5 +26,29 @@ namespace Procurement.View
         {
             ScreenController.Instance.LoadView(new AboutView());
         }
+
+        private void LeagueCheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            string leagueName = ((sender as CheckBox).Content as TextBlock).Text;
+            (DataContext as SettingsViewModel).AddDownloadLeague(leagueName);
+        }
+
+        private void LeagueCheckBox_Unchecked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            string characterName = ((sender as CheckBox).Content as TextBlock).Text;
+            (DataContext as SettingsViewModel).RemoveDownloadLeague(characterName);
+        }
+
+        private void CharacterCheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            string characterName = ((sender as CheckBox).Content as TextBlock).Text;
+            (DataContext as SettingsViewModel).AddDownloadCharacter(characterName);
+        }
+
+        private void CharacterCheckBox_Unchecked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            string characterName = ((sender as CheckBox).Content as TextBlock).Text;
+            (DataContext as SettingsViewModel).RemoveDownloadCharacter(characterName);
+        }
     }
 }

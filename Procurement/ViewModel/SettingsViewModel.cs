@@ -71,6 +71,30 @@ namespace Procurement.ViewModel
             }
         }
 
+        public Dictionary<string, List<string>> AllCharactersByLeague
+        {
+            get
+            {
+                return ApplicationState.AllCharactersByLeague;
+            }
+        }
+
+        public List<string> MyCharacters
+        {
+            get
+            {
+                return Settings.Lists["MyCharacters"];
+            }
+        }
+
+        public List<string> MyLeagues
+        {
+            get
+            {
+                return Settings.Lists["MyLeagues"];
+            }
+        }
+
         public List<string> Characters { get; set; }
 
         public List<string> Leagues { get; set; }
@@ -82,6 +106,36 @@ namespace Procurement.ViewModel
 
         public ICommand UpdateRates { get; private set; }
 
+        private bool downloadOnlyMyLeagues;
+        public bool DownloadOnlyMyLeagues
+        {
+            get { return downloadOnlyMyLeagues; }
+            set
+            {
+                downloadOnlyMyLeagues = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("DownloadOnlyMyLeagues"));
+
+                Settings.UserSettings["DownloadOnlyMyLeagues"] = Convert.ToString(value);
+                Settings.Save();
+            }
+        }
+
+        private bool downloadOnlyMyCharacters;
+        public bool DownloadOnlyMyCharacters
+        {
+            get { return downloadOnlyMyCharacters; }
+            set
+            {
+                downloadOnlyMyCharacters = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("DownloadOnlyMyCharacters"));
+
+                Settings.UserSettings["DownloadOnlyMyCharacters"] = Convert.ToString(value);
+                Settings.Save();
+            }
+        }
+
         public SettingsViewModel(SettingsView view)
         {
             this.view = view;
@@ -90,7 +144,45 @@ namespace Procurement.ViewModel
             refreshCharacters();
             this.CurrentCharacter = Settings.UserSettings["FavoriteCharacter"];
             this.CompactMode = Convert.ToBoolean(Settings.UserSettings["CompactMode"]);
+            this.DownloadOnlyMyLeagues = Convert.ToBoolean(Settings.UserSettings["DownloadOnlyMyLeagues"]);
+            this.DownloadOnlyMyCharacters = Convert.ToBoolean(Settings.UserSettings["DownloadOnlyMyCharacters"]);
             isBusy = false;
+        }
+
+        public void AddDownloadLeague(string leagueName)
+        {
+            if (!Settings.Lists["MyLeagues"].Contains(leagueName))
+            {
+                Settings.Lists["MyLeagues"].Add(leagueName);
+                Settings.Save();
+            }
+        }
+
+        public void RemoveDownloadLeague(string leagueName)
+        {
+            if (Settings.Lists["MyLeagues"].Contains(leagueName))
+            {
+                Settings.Lists["MyLeagues"].Remove(leagueName);
+                Settings.Save();
+            }
+        }
+
+        public void AddDownloadCharacter(string characterName)
+        {
+            if (!Settings.Lists["MyCharacters"].Contains(characterName))
+            {
+                Settings.Lists["MyCharacters"].Add(characterName);
+                Settings.Save();
+            }
+        }
+
+        public void RemoveDownloadCharacter(string characterName)
+        {
+            if (Settings.Lists["MyCharacters"].Contains(characterName))
+            {
+                Settings.Lists["MyCharacters"].Remove(characterName);
+                Settings.Save();
+            }
         }
 
         private void refreshCharacters()

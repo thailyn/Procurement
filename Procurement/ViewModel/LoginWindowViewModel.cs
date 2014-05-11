@@ -136,6 +136,28 @@ namespace Procurement.ViewModel
                 }
                 statusController.Ok();
 
+                List<string> allLeagues = (from c in chars
+                                           select c.League).Distinct().ToList();
+                foreach (var league in allLeagues)
+                {
+                    ApplicationState.AllCharactersByLeague[league] = new List<string>();
+                }
+                if (Settings.Lists.ContainsKey("MyLeagues"))
+                {
+                    foreach (var league in Settings.Lists["MyLeagues"])
+                    {
+                        if (!ApplicationState.AllCharactersByLeague.ContainsKey(league))
+                        {
+                            ApplicationState.AllCharactersByLeague[league] = new List<string>();
+                        }
+                    }
+                }
+
+                foreach (var character in chars)
+                {
+                    ApplicationState.AllCharactersByLeague[character.League].Add(character.Name);
+                }
+
                 bool downloadOnlyMyLeagues = false;
                 downloadOnlyMyLeagues = (Settings.UserSettings.ContainsKey("DownloadOnlyMyLeagues") && 
                                          bool.TryParse(Settings.UserSettings["DownloadOnlyMyLeagues"], out downloadOnlyMyLeagues) && 

@@ -102,10 +102,9 @@ namespace POEApi.Model
 
             foreach (var listKey in Settings.Lists.Keys)
             {
-                // For now, only save the IgnoreTabsInRecipes section.  The others
-                // must be manually updated by the user.  This is also to preserve
-                // the instructions in comments for those other lists.
-                if (!string.Equals("IgnoreTabsInRecipes", listKey)) continue;
+                // Only save the lists that can be updated through the UI.
+                if (!string.Equals("IgnoreTabsInRecipes", listKey) && !string.Equals("MyCharacters", listKey)
+                    && !string.Equals("MyLeagues", listKey)) continue;
 
                 XElement original = originalDoc.Element("Lists").Descendants().FirstOrDefault(x =>
                     x.Attribute("name") != null && string.Equals(x.Attribute("name").Value, listKey));
